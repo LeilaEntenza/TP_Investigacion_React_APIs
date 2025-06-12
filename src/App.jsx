@@ -5,18 +5,23 @@ import axios from 'axios'
 function App() {
   const [image, setImage] = useState();
 
-  const getImage = async () =>{
-    const response = await axios.get(`https://api.thecatapi.com/v1/images/search`);
-    setImage(response.data);
-    console.log(response.data);
+  const getImage = (api) =>{
+    axios.get(api)
+    .then(function (response) {
+      const [objeto] = response.data;
+      setImage(objeto.url)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
   }
 
   useEffect(() =>{
-    getImage();
+    getImage('https://api.thecatapi.com/v1/images/search');
   }, [])
   return (
     <>
-    <img src=''/>
+    <img width='100%' src={image}/>
     </>
   )
 }
