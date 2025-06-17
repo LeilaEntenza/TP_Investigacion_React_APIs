@@ -34,8 +34,9 @@ function App() {
   }, [])
   return (
     <div className='gatos'>
+      <h1>Gato consejero</h1>
     <img width='20%' src={image}/>
-    <p>El consejo para este gato es: {actividad}</p>
+    <p>El consejo de este gato es: {actividad}</p>
     </div>
   )
 }
