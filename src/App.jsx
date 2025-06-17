@@ -4,16 +4,27 @@ import axios from 'axios'
 
 function App() {
   const [image, setImage] = useState();
-  const [actividad, setActividad] = useState();
+  const [activity, setActivity] = useState();
+  const [loading,setLoading] = useState(false);
+
+  useEffect(() =>{
+    getImage('https://api.thecatapi.com/v1/images/search');
+    getActivity('https://api.adviceslip.com/advice');
+  }, [])
 
   const getImage = (api) =>{
+    setLoading(true);
     axios.get(api)
     .then(function (response) {
-      const [objeto] = response.data;
+      console.log(response)
+      const objeto = response.data[0];
       setImage(objeto.url)
     })
     .catch(function (error) {
       console.log(error);
+    })
+    .finally(function(){
+      setLoading(false);
     })
   }
 
@@ -21,22 +32,20 @@ function App() {
     axios.get(api)
     .then(function (response) {
       const objeto = response.data;
-      setActividad(objeto.slip.advice)
+      setActivity(objeto.slip.advice)
     })
     .catch(function (error) {
       console.log(error);
     })
   }
 
-  useEffect(() =>{
-    getImage('https://api.thecatapi.com/v1/images/search');
-    getActivity('https://api.adviceslip.com/advice');
-  }, [])
   return (
     <div className='gatos'>
-      <h1>Gato consejero</h1>
+    <h1>GATO CONSEJERO</h1>
+      {loading && <h1>Loading....</h1>}
     <img width='20%' src={image}/>
-    <p>El consejo de este gato es: {actividad}</p>
+    <p>El consejo de este gato es: {activity}</p>
+    <button onClick={()=>getActivity('https://api.adviceslip.com/advice')}>Cambiar consejo</button>
     </div>
   )
 }
