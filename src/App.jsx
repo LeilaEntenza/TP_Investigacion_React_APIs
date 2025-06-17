@@ -4,6 +4,7 @@ import axios from 'axios'
 
 function App() {
   const [image, setImage] = useState();
+  const [actividad, setActividad] = useState();
 
   const getImage = (api) =>{
     axios.get(api)
@@ -16,13 +17,26 @@ function App() {
     })
   }
 
+  const getActivity = (api) =>{
+    axios.get(api)
+    .then(function (response) {
+      const objeto = response.data;
+      setActividad(objeto.slip.advice)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+  }
+
   useEffect(() =>{
     getImage('https://api.thecatapi.com/v1/images/search');
+    getActivity('https://api.adviceslip.com/advice');
   }, [])
   return (
-    <>
-    <img width='100%' src={image}/>
-    </>
+    <div className='gatos'>
+    <img width='20%' src={image}/>
+    <p>El consejo para este gato es: {actividad}</p>
+    </div>
   )
 }
 
